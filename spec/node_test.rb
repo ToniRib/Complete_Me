@@ -32,9 +32,38 @@ class NodeTest < Minitest::Test
     assert node.word?
   end
 
-  def test_node_has_a_links_hash_that_is_empty_by_default
+  def test_single_letter_node_has_empty_links_hash
     node = Node.new('a')
 
     assert_equal Hash.new, node.links
+  end
+
+  def test_can_insert_link_to_single_letter_node
+    node = Node.new
+    node.insert('a')
+
+    assert_equal 1, node.links.count
+    assert_equal ['a'], node.links.keys
+    assert node.links.values[0].is_a?(Node)
+  end
+
+  def test_does_not_duplicate_links
+    node = Node.new
+    node.insert('a')
+    node.insert('a')
+
+    assert_equal 1, node.links.count
+    assert_equal ['a'], node.links.keys
+  end
+
+  def test_can_insert_links_to_two_letter_node
+    skip
+    node = Node.new
+    node.insert('ab')
+
+    assert_equal 1, node.links.count
+    assert_equal ['a'], node.links.keys
+
+    #additional testing
   end
 end

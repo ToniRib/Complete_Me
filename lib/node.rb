@@ -1,3 +1,5 @@
+require 'pry'
+
 class Node
   attr_reader :value
   attr_accessor :valid_word, :links
@@ -10,5 +12,9 @@ class Node
 
   def word?
     @valid_word
+  end
+
+  def insert(word)
+    @links[word] = Node.new(word)
   end
 end
