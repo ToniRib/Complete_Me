@@ -1,3 +1,5 @@
+require 'pry'
+
 class Dictionary
   attr_reader :words
 
@@ -10,7 +12,7 @@ class Dictionary
   end
 
   def mass_insert(list)
-    list.each do |word|
+    list.split("\n").each do |word|
       insert(word)
     end
   end
