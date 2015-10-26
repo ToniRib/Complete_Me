@@ -12,6 +12,8 @@ class Dictionary
   end
 
   def mass_insert(list)
+    list = stringify(list) if list.is_a?(Array)
+
     list.split("\n").each do |word|
       insert(word) unless word_exists(word)
     end
@@ -19,5 +21,9 @@ class Dictionary
 
   def word_exists(word)
     words.include?(word)
+  end
+
+  def stringify(list)
+    list.join("\n")
   end
 end

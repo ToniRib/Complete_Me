@@ -61,4 +61,11 @@ class DictionaryTest < Minitest::Test
 
     refute dictionary.word_exists('apple')
   end
+
+  def test_will_accept_array_as_input
+    dictionary = Dictionary.new
+    dictionary.mass_insert(%w(apple banana orange pear))
+
+    assert_equal 4, dictionary.words.count
+  end
 end
