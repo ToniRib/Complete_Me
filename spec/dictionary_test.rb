@@ -68,4 +68,11 @@ class DictionaryTest < Minitest::Test
 
     assert_equal 4, dictionary.words.count
   end
+
+  def test_mass_insert_works_with_just_one_word
+    dictionary = Dictionary.new
+    dictionary.mass_insert('banana')
+
+    assert_equal 1, dictionary.words.count
+  end
 end
