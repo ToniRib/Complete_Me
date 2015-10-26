@@ -41,11 +41,24 @@ class DictionaryTest < Minitest::Test
   end
 
   def test_duplicate_words_are_ignored
-    skip
     dictionary = Dictionary.new
-    list = %w(banana apple banana pear)
+    list = "banana\napple\nbanana\npear"
     dictionary.mass_insert(list)
 
     assert_equal 3, dictionary.words.count
+  end
+
+  def test_returns_true_if_word_exists_in_dictionary
+    dictionary = Dictionary.new
+    dictionary.insert('banana')
+
+    assert dictionary.word_exists('banana')
+  end
+
+  def test_returns_false_if_word_is_not_in_dictionary
+    dictionary = Dictionary.new
+    dictionary.insert('banana')
+
+    refute dictionary.word_exists('apple')
   end
 end
