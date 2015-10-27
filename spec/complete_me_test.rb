@@ -220,4 +220,29 @@ class CompleteMeTest < Minitest::Test
 
     assert_equal arr, completion.convert_to_array(arr)
   end
+
+  def test_suggest_returns_selected_words_first
+    completion = CompleteMe.new
+
+    completion.populate("banana\nbaseball\nbat")
+    completion.select('ba', 'bat')
+
+    assert_equal 'bat', completion.suggest('ba')[0]
+  end
+
+  def test_returns_suggestions_with_highest_selection_counts_first
+    completion = CompleteMe.new
+
+    completion.populate("bear\nbeat\nbean\nbeanpole\nbetter")
+
+    6.times { completion.select('be', 'beat') }
+    4.times { completion.select('be', 'bean') }
+    2.times { completion.select('be', 'better') }
+
+    matches = completion.suggest('be')
+
+    assert_equal 'beat', matches[0]
+    assert_equal 'bean', matches[1]
+    assert_equal 'better', matches[2]
+  end
 end

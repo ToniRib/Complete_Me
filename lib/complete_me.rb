@@ -44,6 +44,10 @@ class CompleteMe
   def suggest(str)
     center.suggest(str)
   end
+
+  def select(str, selection)
+    center.select(selection)
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
