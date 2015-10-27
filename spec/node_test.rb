@@ -29,6 +29,11 @@ class NodeTest < Minitest::Test
     assert node.word?
   end
 
+  def test_node_starts_with_a_selection_count_of_zero
+    node = Node.new
+    assert_equal 0, node.select_count
+  end
+
   def test_single_letter_node_has_empty_links_hash
     node = Node.new('a')
 
@@ -151,5 +156,34 @@ class NodeTest < Minitest::Test
     end
 
     assert_equal 6, node.count_valid_words
+  end
+
+  def test_select_count_increases_by_one_when_word_is_selected
+    node = Node.new
+    node.insert('hello')
+
+    node.select('hell')
+
+    assert_equal 1, node.search('hell').select_count
+  end
+
+  def test_node_can_be_selected_more_than_once
+    node = Node.new
+    node.insert('hello')
+
+    3.times { node.select('hell') }
+
+    assert_equal 3, node.search('hell').select_count
+  end
+
+  def test_two_nodes_can_be_selected
+    node = Node.new
+    node.insert('hello')
+
+    3.times { node.select('hell') }
+    8.times { node.select('hello') }
+
+    assert_equal 3, node.search('hell').select_count
+    assert_equal 8, node.search('hello').select_count
   end
 end

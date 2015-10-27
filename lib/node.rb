@@ -2,12 +2,13 @@ require 'pry'
 
 class Node
   attr_reader :value
-  attr_accessor :valid_word, :links
+  attr_accessor :valid_word, :links, :select_count
 
   def initialize(value = '')
     @value = value
     @valid_word = false
     @links = {}
+    @select_count = 0
   end
 
   def word?
@@ -68,5 +69,9 @@ class Node
     suggestions = find_valid_words(match.links)
     suggestions << match.value if match.valid_word
     suggestions
+  end
+
+  def select(selection)
+    search(selection).select_count += 1
   end
 end
