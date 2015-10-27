@@ -48,7 +48,6 @@ class NodeTest < Minitest::Test
   end
 
   def test_does_not_duplicate_links
-    skip
     node = Node.new
     node.insert('a')
     node.insert('a')
@@ -57,15 +56,25 @@ class NodeTest < Minitest::Test
     assert_equal ['a'], node.links.keys
   end
 
-  def test_can_insert_links_to_two_letter_node
-    skip
+  def test_can_insert_links_to_two_letter_word
     node = Node.new
     node.insert('ab')
-    p node
 
-    assert_equal 1, node.links.count
-    assert_equal ['a'], node.links.keys
+    assert_equal '', node.value
+    assert_equal 'a', node.links['a'].value
+    assert_equal 'ab', node.links['a'].links['b'].value
+  end
 
-    #additional testing
+  def test_can_insert_links_to_five_letter_word
+    # refactor this test
+    node = Node.new
+    node.insert('hello')
+
+    assert_equal '', node.value
+    assert_equal 'h', node.links['h'].value
+    assert_equal 'he', node.links['h'].links['e'].value
+    assert_equal 'hel', node.links['h'].links['e'].links['l'].value
+    assert_equal 'hell', node.links['h'].links['e'].links['l'].links['l'].value
+    assert_equal 'hello', node.links['h'].links['e'].links['l'].links['l'].links['o'].value
   end
 end

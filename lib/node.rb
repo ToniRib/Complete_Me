@@ -22,11 +22,14 @@ class Node
     if links[letter] == nil
       links[letter] = Node.new(str[0..position])
     end
+    
     links[letter].insert(str, position + 1)
   end
 end
 
-node = Node.new
-node.insert('abc')
-# binding.pry
-p node
+if __FILE__ == $0
+  node = Node.new
+  node.insert('abc')
+  # binding.pry
+  p node
+end
