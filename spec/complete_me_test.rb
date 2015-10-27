@@ -37,6 +37,7 @@ class CompleteMeTest < Minitest::Test
     completion.insert('hi')
 
     assert_equal 'h', completion.center.links.keys[0]
+    assert_equal 1, completion.count
   end
 
   def test_insert_rejects_array_of_two_strings
@@ -62,4 +63,6 @@ class CompleteMeTest < Minitest::Test
     e = assert_raises("RuntimeError") { completion.insert({ a: 1 }) }
     assert_equal fail_message, e.message
   end
+
+  ## and add a lot more tests...
 end

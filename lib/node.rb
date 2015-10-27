@@ -14,6 +14,7 @@ class Node
     @valid_word
   end
 
+  # need to refactor
   def insert(str, position = 0)
     @valid_word = true if str.length == position
 
