@@ -1,5 +1,6 @@
 require 'pry'
 
+# Class for each node of the Trie
 class Node
   attr_reader :value
   attr_accessor :valid_word, :links, :select_count
@@ -16,30 +17,30 @@ class Node
   end
 
   # need to refactor
-  def insert(str, position = 0)
-    fail 'Second argument must be an integer' unless position.is_a?(Fixnum)
+  def insert(str, pos = 0)
+    fail 'Second argument must be an integer' unless pos.is_a?(Fixnum)
 
-    @valid_word = true if str.length == position
+    @valid_word = true if str.length == pos
 
-    return if str[position].nil?
+    return if str[pos].nil?
 
-    letter = str[position]
+    letter = str[pos]
 
-    links[letter] = Node.new(str[0..position]) if links[letter].nil?
+    links[letter] = Node.new(str[0..pos]) if links[letter].nil?
 
-    links[letter].insert(str, position + 1)
+    links[letter].insert(str, pos + 1)
   end
 
-  def search(str, position = 0)
-    letter = str[position]
+  def search(str, pos = 0)
+    letter = str[pos]
 
-    return links[letter] if end_of_string?(str, position)
+    return links[letter] if end_of_string?(str, pos)
 
-    links[letter].search(str, position + 1)
+    links[letter].search(str, pos + 1)
   end
 
-  def end_of_string?(str, position)
-    str.length == position + 1
+  def end_of_string?(str, pos)
+    str.length == pos + 1
   end
 
   def links_exist(cur_links, letter)
@@ -68,7 +69,7 @@ class Node
     suggestions = find_valid_words(match.links)
     add_current_word(match, suggestions) if match.valid_word
     suggestions = slice_into_pairs(suggestions)
-    suggestions = sort_and_collect_suggestions(suggestions)
+    sort_and_collect_suggestions(suggestions)
   end
 
   def add_current_word(match, suggestions)
