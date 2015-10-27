@@ -51,7 +51,7 @@ class Node
     matches = []
 
     cur_links.keys.each do |k|
-      matches.push(cur_links[k].value) if cur_links[k].valid_word
+      matches.push(cur_links[k].value, cur_links[k].select_count) if cur_links[k].valid_word
 
       matches << find_valid_words(cur_links[k].links) if links_exist(cur_links, k)
     end
@@ -68,7 +68,10 @@ class Node
     match = search(str)
     suggestions = find_valid_words(match.links)
     suggestions << match.value if match.valid_word
-    suggestions
+    suggestions << match.select_count if match.valid_word
+    suggestions = suggestions.each_slice(2).to_a
+    suggestions.sort_by { |name, count| count }.reverse
+    suggestions.collect { |idx| idx[0] }
   end
 
   def reorder(list)
