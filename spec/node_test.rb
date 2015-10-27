@@ -77,4 +77,25 @@ class NodeTest < Minitest::Test
     assert_equal 'hell', node.links['h'].links['e'].links['l'].links['l'].value
     assert_equal 'hello', node.links['h'].links['e'].links['l'].links['l'].links['o'].value
   end
+
+  def test_can_insert_two_multiletter_words
+    node = Node.new
+    node.insert('ab')
+    node.insert('acd')
+
+    assert_equal '', node.value
+    assert_equal 'a', node.links['a'].value
+    assert_equal 'ab', node.links['a'].links['b'].value
+    assert_equal 'ac', node.links['a'].links['c'].value
+    assert_equal 'acd', node.links['a'].links['c'].links['d'].value
+  end
+
+  def test_sets_node_whose_value_is_inserted_string_to_valid_word
+    node = Node.new
+    node.insert('hi')
+
+    refute node.valid_word
+    refute node.links['h'].valid_word
+    assert node.links['h'].links['i'].valid_word
+  end
 end

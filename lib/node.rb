@@ -15,14 +15,15 @@ class Node
   end
 
   def insert(str, position = 0)
+    @valid_word = true if str.length == position
     return if str[position].nil?
-
+    
     letter = str[position]
 
     if links[letter] == nil
       links[letter] = Node.new(str[0..position])
     end
-    
+
     links[letter].insert(str, position + 1)
   end
 end
