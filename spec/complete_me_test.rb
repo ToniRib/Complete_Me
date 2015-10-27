@@ -26,6 +26,78 @@ class CompleteMeTest < Minitest::Test
     assert_equal 0, completion.count
   end
 
+  def test_array_query_returns_true_if_input_is_an_array
+    completion = CompleteMe.new
+
+    assert completion.array?(%w(a b c))
+  end
+
+  def test_array_query_returns_false_if_input_is_a_string
+    completion = CompleteMe.new
+
+    refute completion.array?('hello')
+  end
+
+  def test_array_query_returns_false_if_input_is_a_number
+    completion = CompleteMe.new
+
+    refute completion.array?(1)
+  end
+
+  def test_array_query_returns_false_if_input_is_a_hash
+    completion = CompleteMe.new
+
+    refute completion.array?(a: 2)
+  end
+
+  def test_string_query_returns_true_if_input_is_a_string
+    completion = CompleteMe.new
+
+    assert completion.string?('hello')
+  end
+
+  def test_string_query_returns_false_if_input_is_an_array
+    completion = CompleteMe.new
+
+    refute completion.string?(%w(a b c))
+  end
+
+  def test_string_query_returns_false_if_input_is_a_number
+    completion = CompleteMe.new
+
+    refute completion.string?(1)
+  end
+
+  def test_string_query_returns_false_if_input_is_a_hash
+    completion = CompleteMe.new
+
+    refute completion.string?(a: 2)
+  end
+
+  def test_string_or_array_query_returns_true_if_input_is_an_array
+    completion = CompleteMe.new
+
+    assert completion.string_or_array?(%w(a b c))
+  end
+
+  def test_string_or_array_query_returns_true_if_input_is_a_string
+    completion = CompleteMe.new
+
+    assert completion.string_or_array?('hello')
+  end
+
+  def test_string_or_array_query_returns_false_if_input_is_a_number
+    completion = CompleteMe.new
+
+    refute completion.string_or_array?(1)
+  end
+
+  def test_string_or_array_query_returns_false_if_input_is_a_hash
+    completion = CompleteMe.new
+
+    refute completion.string_or_array?(a: 2)
+  end
+
   def test_ignores_insertion_of_empty_string
     completion = CompleteMe.new
     completion.insert('')
@@ -40,6 +112,16 @@ class CompleteMeTest < Minitest::Test
 
     assert_equal 'h', completion.center.links.keys[0]
     assert_equal 1, completion.count
+  end
+
+  def test_count_increases_by_one_for_each_word_inserted
+    completion = CompleteMe.new
+
+    completion.insert('hi')
+    assert_equal 1, completion.count
+
+    completion.insert('hello')
+    assert_equal 2, completion.count
   end
 
   def test_insert_rejects_array_of_two_strings
@@ -100,5 +182,42 @@ class CompleteMeTest < Minitest::Test
 
     e = assert_raises(RuntimeError) { completion.populate(a: 2) }
     assert_equal fail_message, e.message
+  end
+
+  def test_suggests_matches_for_string
+    completion = CompleteMe.new
+    completion.populate("banana\napple\nbongo\nbang")
+
+    matches = completion.suggest('ba')
+    expected = %w(banana bang)
+
+    assert_equal expected, matches.sort
+  end
+
+  def test_suggests_matches_for_different_string
+    completion = CompleteMe.new
+    completion.populate("banana\napple\nbongo\nbang")
+
+    matches = completion.suggest('b')
+    expected = %w(banana bang bongo)
+
+    assert_equal expected, matches.sort
+  end
+
+  def test_converts_newline_separated_list_to_array
+    completion = CompleteMe.new
+
+    input = "banana\napple\nbongo"
+    expected = %w(banana apple bongo)
+
+    assert_equal expected, completion.convert_to_array(input)
+  end
+
+  def test_convert_to_array_does_not_convert_if_input_is_array
+    completion = CompleteMe.new
+
+    arr = %w(banana apple bongo)
+
+    assert_equal arr, completion.convert_to_array(arr)
   end
 end

@@ -9,15 +9,30 @@ class CompleteMe
     @count = 0
   end
 
+  def convert_to_array(list)
+    array?(list) ? list : list.split("\n")
+  end
+
+  def string_or_array?(list)
+    string?(list) || array?(list)
+  end
+
+  def string?(word)
+    word.is_a?(String)
+  end
+
+  def array?(list)
+    list.is_a?(Array)
+  end
+
   def insert(word)
     fail 'insert only accepts single string argument' unless string?(word)
     center.insert(word.downcase)
     @count += 1
   end
 
-  # need tests for incoming cases like insert
   def populate(list)
-    fail 'only accepts strings or arrays' unless string?(list) || array?(list)
+    fail 'only accepts strings or arrays' unless string_or_array?(list)
 
     list = convert_to_array(list)
 
@@ -28,18 +43,6 @@ class CompleteMe
 
   def suggest(str)
     center.suggest(str)
-  end
-
-  def convert_to_array(list)
-    array?(list) ? list : list.split("\n")
-  end
-
-  def array?(list)
-    list.is_a?(Array)
-  end
-
-  def string?(word)
-    word.is_a?(String)
   end
 end
 
