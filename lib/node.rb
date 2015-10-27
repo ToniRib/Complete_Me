@@ -19,15 +19,25 @@ class Node
   def insert(str, pos = 0)
     return if str.empty?
 
-    fail 'Second argument must be an integer' unless pos.is_a?(Fixnum)
+    fail 'Second argument must be an integer' unless fixnum?(pos)
 
     letter = str[pos]
 
-    links[letter] = Node.new(str[0..pos]) if links[letter].nil?
+    links[letter] = Node.new(str[0..pos]) if link_does_not_exist(letter)
 
-    links[letter].valid_word = true if end_of_string?(str, pos)
+    if end_of_string?(str, pos)
+      links[letter].valid_word = true
+    else
+      links[letter].insert(str, pos + 1)
+    end
+  end
 
-    links[letter].insert(str, pos + 1) unless end_of_string?(str, pos)
+  def fixnum?(x)
+    x.is_a?(Fixnum)
+  end
+
+  def link_does_not_exist(letter)
+    links[letter].nil?
   end
 
   def search(str, pos = 0)
@@ -42,37 +52,39 @@ class Node
     str.length == pos + 1
   end
 
-  def links_exist(cur_links, letter)
-    cur_links[letter].links != {}
-  end
-
-  # need to refactor
-  def find_valid_words(cur_links)
+  def find_words(cur_links)
     matches = []
 
     cur_links.keys.each do |k|
-      matches.push(cur_links[k].value, cur_links[k].select_count) if cur_links[k].valid_word
-
-      matches << find_valid_words(cur_links[k].links) if links_exist(cur_links, k)
+      matches.push(value_count_pair(cur_links, k)) if cur_links[k].valid_word
+      matches << find_words(cur_links[k].links) if links_exist(cur_links, k)
     end
 
     matches.flatten
   end
 
+  def links_exist(cur_links, letter)
+    !cur_links[letter].links.empty?
+  end
+
+  def value_count_pair(links, k)
+    [links[k].value, links[k].select_count]
+  end
+
   def count_valid_words
-    links.to_s.scan("@valid_word=true").count
+    links.to_s.scan('@valid_word=true').count
   end
 
   def suggest(str)
     match = search(str)
-    suggestions = find_valid_words(match.links)
+    suggestions = find_words(match.links)
     add_current_word(match, suggestions) if match.valid_word
     suggestions = slice_into_pairs(suggestions)
     sort_and_collect_suggestions(suggestions)
   end
 
   def add_current_word(match, suggestions)
-    suggestions.concat( [match.value, match.select_count] )
+    suggestions.concat([match.value, match.select_count])
   end
 
   def slice_into_pairs(arr)
@@ -80,7 +92,7 @@ class Node
   end
 
   def sort_and_collect_suggestions(list)
-    list = list.sort_by { |name, count| count }.reverse
+    list = list.sort_by { |_, count| count }.reverse
     list.collect { |idx| idx[0] }
   end
 

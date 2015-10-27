@@ -58,6 +58,13 @@ class NodeTest < Minitest::Test
     assert_equal ['a'], node.links.keys
   end
 
+  def test_ignores_insertion_of_empty_string
+    node = Node.new
+    node.insert('')
+
+    assert_equal 0, node.links.count
+  end
+
   def test_can_insert_links_to_two_letter_word
     node = Node.new
     node.insert('ab')
