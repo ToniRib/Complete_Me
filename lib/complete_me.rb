@@ -1,5 +1,6 @@
 require_relative 'node'
 
+# Class for auto-completion suggestions
 class CompleteMe
   attr_reader :count, :center
 
@@ -10,7 +11,7 @@ class CompleteMe
 
   def insert(word)
     fail 'insert only accepts single string argument' unless string?(word)
-    center.insert(word)
+    center.insert(word.downcase)
     @count += 1
   end
 
@@ -18,7 +19,7 @@ class CompleteMe
   def populate(list)
     list = convert_to_array(list)
 
-    list.each { |word| center.insert(word) }
+    list.each { |word| center.insert(word.downcase) }
 
     @count = center.count_valid_words
   end
@@ -40,11 +41,11 @@ class CompleteMe
   end
 end
 
-if __FILE__ == $0
+if __FILE__ == $PROGRAM_NAME
   completion = CompleteMe.new
   completion.insert('toni')
   puts completion.count
-  dict = File.read("/usr/share/dict/words")
+  dict = File.read('/usr/share/dict/words')
   completion.populate(dict)
   puts completion.count
   p completion.suggest('piz')

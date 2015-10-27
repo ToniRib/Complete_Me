@@ -12,14 +12,30 @@ class NodeTest < Minitest::Test
     assert_equal '', node.value
   end
 
-  def test_node_has_a_value
+  def test_node_is_not_a_word_by_default
+    node = Node.new('piz')
+    refute node.word?
+  end
+
+  def test_node_starts_with_a_selection_count_of_zero
+    node = Node.new
+    assert_equal 0, node.select_count
+  end
+
+  def test_node_has_no_links_by_default
+    node = Node.new
+    expected = {}
+    assert_equal expected, node.links
+  end
+
+  def test_node_can_be_initialized_with_a_single_letter_value
     node = Node.new('p')
     assert_equal 'p', node.value
   end
 
-  def test_node_is_not_a_word_by_default
-    node = Node.new('piz')
-    refute node.word?
+  def test_node_can_be_initialized_with_a_multi_letter_value
+    node = Node.new('pi')
+    assert_equal 'pi', node.value
   end
 
   def test_node_can_be_recognized_as_valid_word
@@ -27,11 +43,6 @@ class NodeTest < Minitest::Test
     node.valid_word = true
 
     assert node.word?
-  end
-
-  def test_node_starts_with_a_selection_count_of_zero
-    node = Node.new
-    assert_equal 0, node.select_count
   end
 
   def test_single_letter_node_has_empty_links_hash
@@ -65,26 +76,27 @@ class NodeTest < Minitest::Test
     assert_equal 0, node.links.count
   end
 
-  def test_can_insert_links_to_two_letter_word
+  def test_can_insert_links_to_new_nodes_for_two_letter_word
     node = Node.new
     node.insert('ab')
 
     assert_equal '', node.value
+
     assert_equal 'a', node.links['a'].value
+    assert node.links['a'].is_a?(Node)
+
     assert_equal 'ab', node.links['a'].links['b'].value
+    assert node.links['a'].links['b'].is_a?(Node)
   end
 
-  def test_can_insert_links_to_five_letter_word
-    # refactor this test
+  def test_can_insert_links_to_three_letter_word
     node = Node.new
-    node.insert('hello')
+    node.insert('hel')
 
     assert_equal '', node.value
     assert_equal 'h', node.links['h'].value
     assert_equal 'he', node.links['h'].links['e'].value
     assert_equal 'hel', node.links['h'].links['e'].links['l'].value
-    assert_equal 'hell', node.links['h'].links['e'].links['l'].links['l'].value
-    assert_equal 'hello', node.links['h'].links['e'].links['l'].links['l'].links['o'].value
   end
 
   def test_can_insert_two_multiletter_words
@@ -94,9 +106,16 @@ class NodeTest < Minitest::Test
 
     assert_equal '', node.value
     assert_equal 'a', node.links['a'].value
+    assert node.links['a'].is_a?(Node)
+
     assert_equal 'ab', node.links['a'].links['b'].value
+    assert node.links['a'].links['b'].is_a?(Node)
+
     assert_equal 'ac', node.links['a'].links['c'].value
+    assert node.links['a'].links['c'].is_a?(Node)
+
     assert_equal 'acd', node.links['a'].links['c'].links['d'].value
+    assert node.links['a'].links['c'].links['d'].is_a?(Node)
   end
 
   def test_can_only_insert_one_string_at_a_time
@@ -117,6 +136,21 @@ class NodeTest < Minitest::Test
     assert node.links['h'].links['i'].valid_word
   end
 
+  def test_fixnum_returns_true_if_input_is_an_integer
+    node = Node.new
+    assert node.fixnum?(3)
+  end
+
+  def test_fixum_returns_false_if_input_is_an_array
+    node = Node.new
+    refute node.fixnum?([3])
+  end
+
+  def test_fixum_returns_false_if_input_is_a_string
+    node = Node.new
+    refute node.fixnum?('3')
+  end
+
   def test_finds_node_with_given_value
     node = Node.new
     node.insert('hello')
@@ -132,36 +166,59 @@ class NodeTest < Minitest::Test
     assert_equal 'happy', node.search('happy').value
   end
 
-  def test_returns_possible_matches
+  def test_returns_possible_matches_for_suggestion
     node = Node.new
+
     words = %w(can cannibal canister cannoli cane)
     words.each do |word|
       node.insert(word)
     end
 
-    all_matches = node.suggest('ca')
+    expected = words.sort
+    matches = node.suggest('ca')
 
-    assert_equal [], words - all_matches
+    assert_equal expected, matches.sort
   end
 
   def test_returns_different_matches_for_different_suggested_string
     node = Node.new
+
     words = %w(can cannibal canister cannoli cane)
     words.each do |word|
       node.insert(word)
     end
 
-    assert_equal %w(cannibal cannoli).reverse, node.suggest('cann')
+    expected = %w(cannibal cannoli)
+    matches = node.suggest('cann')
+
+    assert_equal expected, node.suggest('cann').sort
   end
 
   def test_search_returns_original_string_as_match_if_it_is_a_valid_word
     node = Node.new
+
     words = %w(can cannibal canister cannoli cane)
     words.each do |word|
       node.insert(word)
     end
 
-    assert node.suggest('can').include?('can')
+    matches = node.suggest('can')
+
+    assert matches.include?('can')
+  end
+
+  def test_returns_true_if_no_link_exists_for_specific_letter
+    node = Node.new
+    node.insert('hi')
+
+    assert node.search('h').link_does_not_exist('p')
+  end
+
+  def test_returns_false_if_link_exist_for_specific_letter
+    node = Node.new
+    node.insert('hi')
+
+    refute node.search('h').link_does_not_exist('i')
   end
 
   def test_empty_node_has_no_valid_words
@@ -191,24 +248,33 @@ class NodeTest < Minitest::Test
     node = Node.new
     node.insert('hello')
 
-    node.select('hell')
+    node.select('hello')
 
-    assert_equal 1, node.search('hell').select_count
-    assert_equal 0, node.search('hello').select_count
+    assert_equal 1, node.search('hello').select_count
+  end
+
+  def test_select_count_does_not_increase_if_node_selected_is_not_a_valid_word
+    node = Node.new
+    node.insert('hello')
+
+    node.select('he')
+
+    assert_equal 0, node.search('he').select_count
   end
 
   def test_node_can_be_selected_more_than_once
     node = Node.new
     node.insert('hello')
 
-    3.times { node.select('hell') }
+    3.times { node.select('hello') }
 
-    assert_equal 3, node.search('hell').select_count
+    assert_equal 3, node.search('hello').select_count
   end
 
   def test_two_nodes_can_be_selected_sequentially
     node = Node.new
     node.insert('hello')
+    node.insert('hell')
 
     3.times { node.select('hell') }
     8.times { node.select('hello') }

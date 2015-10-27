@@ -56,7 +56,7 @@ class Node
     matches = []
 
     cur_links.keys.each do |k|
-      matches.push(value_count_pair(cur_links, k)) if cur_links[k].valid_word
+      matches.push(value_count_pair(cur_links, k)) if cur_links[k].word?
       matches << find_words(cur_links[k].links) if links_exist(cur_links, k)
     end
 
@@ -78,7 +78,7 @@ class Node
   def suggest(str)
     match = search(str)
     suggestions = find_words(match.links)
-    add_current_word(match, suggestions) if match.valid_word
+    add_current_word(match, suggestions) if match.word?
     suggestions = slice_into_pairs(suggestions)
     sort_and_collect_suggestions(suggestions)
   end
@@ -97,6 +97,12 @@ class Node
   end
 
   def select(selection)
-    search(selection).select_count += 1
+    selected_node = search(selection)
+    
+    if selected_node.word?
+      selected_node.select_count += 1
+    else
+      puts "Ignoring selection of #{selection}: not a word"
+    end
   end
 end
