@@ -253,15 +253,6 @@ class NodeTest < Minitest::Test
     assert_equal 1, node.search('hello').select_count
   end
 
-  def test_select_count_does_not_increase_if_node_selected_is_not_a_valid_word
-    node = Node.new
-    node.insert('hello')
-
-    node.select('he')
-
-    assert_equal 0, node.search('he').select_count
-  end
-
   def test_node_can_be_selected_more_than_once
     node = Node.new
     node.insert('hello')
@@ -322,5 +313,14 @@ class NodeTest < Minitest::Test
     assert_equal 'inside', node.suggest('in')[0]
     assert_equal 'intelligence', node.suggest('in')[1]
     assert_equal 'insight', node.suggest('in')[2]
+  end
+
+  def test_array_is_sliced_into_pairs
+    node = Node.new
+
+    input = [1, 2, 3, 4, 5, 6]
+    expected = [[1, 2], [3, 4], [5, 6]]
+
+    assert_equal expected, node.slice_into_pairs(input)
   end
 end

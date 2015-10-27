@@ -97,12 +97,6 @@ class Node
   end
 
   def select(selection)
-    selected_node = search(selection)
-    
-    if selected_node.word?
-      selected_node.select_count += 1
-    else
-      puts "Ignoring selection of #{selection}: not a word"
-    end
+    search(selection).select_count += 1
   end
 end
