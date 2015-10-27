@@ -26,78 +26,6 @@ class CompleteMeTest < Minitest::Test
     assert_equal 0, completion.count
   end
 
-  def test_array_query_returns_true_if_input_is_an_array
-    completion = CompleteMe.new
-
-    assert completion.array?(%w(a b c))
-  end
-
-  def test_array_query_returns_false_if_input_is_a_string
-    completion = CompleteMe.new
-
-    refute completion.array?('hello')
-  end
-
-  def test_array_query_returns_false_if_input_is_a_number
-    completion = CompleteMe.new
-
-    refute completion.array?(1)
-  end
-
-  def test_array_query_returns_false_if_input_is_a_hash
-    completion = CompleteMe.new
-
-    refute completion.array?(a: 2)
-  end
-
-  def test_string_query_returns_true_if_input_is_a_string
-    completion = CompleteMe.new
-
-    assert completion.string?('hello')
-  end
-
-  def test_string_query_returns_false_if_input_is_an_array
-    completion = CompleteMe.new
-
-    refute completion.string?(%w(a b c))
-  end
-
-  def test_string_query_returns_false_if_input_is_a_number
-    completion = CompleteMe.new
-
-    refute completion.string?(1)
-  end
-
-  def test_string_query_returns_false_if_input_is_a_hash
-    completion = CompleteMe.new
-
-    refute completion.string?(a: 2)
-  end
-
-  def test_string_or_array_query_returns_true_if_input_is_an_array
-    completion = CompleteMe.new
-
-    assert completion.string_or_array?(%w(a b c))
-  end
-
-  def test_string_or_array_query_returns_true_if_input_is_a_string
-    completion = CompleteMe.new
-
-    assert completion.string_or_array?('hello')
-  end
-
-  def test_string_or_array_query_returns_false_if_input_is_a_number
-    completion = CompleteMe.new
-
-    refute completion.string_or_array?(1)
-  end
-
-  def test_string_or_array_query_returns_false_if_input_is_a_hash
-    completion = CompleteMe.new
-
-    refute completion.string_or_array?(a: 2)
-  end
-
   def test_ignores_insertion_of_empty_string
     completion = CompleteMe.new
     completion.insert('')
@@ -211,23 +139,6 @@ class CompleteMeTest < Minitest::Test
     expected = %w(banana bang bongo)
 
     assert_equal expected, matches.sort
-  end
-
-  def test_converts_newline_separated_list_to_array
-    completion = CompleteMe.new
-
-    input = "banana\napple\nbongo"
-    expected = %w(banana apple bongo)
-
-    assert_equal expected, completion.convert_to_array(input)
-  end
-
-  def test_convert_to_array_does_not_convert_if_input_is_array
-    completion = CompleteMe.new
-
-    arr = %w(banana apple bongo)
-
-    assert_equal arr, completion.convert_to_array(arr)
   end
 
   def test_suggest_returns_selected_words_first

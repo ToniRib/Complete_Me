@@ -9,22 +9,6 @@ class CompleteMe
     @count = 0
   end
 
-  def convert_to_array(list)
-    array?(list) ? list : list.split("\n")
-  end
-
-  def string_or_array?(list)
-    string?(list) || array?(list)
-  end
-
-  def string?(word)
-    word.is_a?(String)
-  end
-
-  def array?(list)
-    list.is_a?(Array)
-  end
-
   def insert(word)
     fail 'insert only accepts single string argument' unless string?(word)
     center.insert(word.downcase)
@@ -47,6 +31,24 @@ class CompleteMe
 
   def select(str, selection)
     center.select(selection)
+  end
+
+  private
+
+  def convert_to_array(list)
+    array?(list) ? list : list.split("\n")
+  end
+
+  def string_or_array?(list)
+    string?(list) || array?(list)
+  end
+
+  def string?(word)
+    word.is_a?(String)
+  end
+
+  def array?(list)
+    list.is_a?(Array)
   end
 end
 
