@@ -9,7 +9,7 @@ class CompleteMe
   end
 
   def insert(word)
-    fail 'insert method only accepts a single string argument' unless string?(word)
+    fail 'insert only accepts single string argument' unless string?(word)
     center.insert(word)
     @count += 1
   end

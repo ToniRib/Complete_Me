@@ -41,7 +41,7 @@ class CompleteMeTest < Minitest::Test
 
   def test_insert_rejects_array_of_two_strings
     completion = CompleteMe.new
-    fail_message = 'insert method only accepts a single string argument'
+    fail_message = 'insert only accepts single string argument'
 
     e = assert_raises("RuntimeError") { completion.insert(%w(hello hi)) }
     assert_equal fail_message, e.message
@@ -49,7 +49,7 @@ class CompleteMeTest < Minitest::Test
 
   def test_insert_rejects_number
     completion = CompleteMe.new
-    fail_message = 'insert method only accepts a single string argument'
+    fail_message = 'insert only accepts single string argument'
 
     e = assert_raises("RuntimeError") { completion.insert(1) }
     assert_equal fail_message, e.message
@@ -57,7 +57,7 @@ class CompleteMeTest < Minitest::Test
 
   def test_insert_rejects_hash
     completion = CompleteMe.new
-    fail_message = 'insert method only accepts a single string argument'
+    fail_message = 'insert only accepts single string argument'
 
     e = assert_raises("RuntimeError") { completion.insert({ a: 1 }) }
     assert_equal fail_message, e.message
