@@ -176,7 +176,7 @@ class NodeTest < Minitest::Test
     assert_equal 3, node.search('hell').select_count
   end
 
-  def test_two_nodes_can_be_selected
+  def test_two_nodes_can_be_selected_sequentially
     node = Node.new
     node.insert('hello')
 
@@ -185,5 +185,16 @@ class NodeTest < Minitest::Test
 
     assert_equal 3, node.search('hell').select_count
     assert_equal 8, node.search('hello').select_count
+  end
+
+  def test_only_one_node_can_be_selected_at_a_time
+    node = Node.new
+    # binding.pry
+    node.insert('hello')
+
+    fail_message = "wrong number of arguments (2 for 1)"
+
+    e = assert_raises(ArgumentError) { node.select('hello', 'hi') }
+    assert_equal fail_message, e.message
   end
 end
