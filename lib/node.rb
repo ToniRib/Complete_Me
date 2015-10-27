@@ -63,19 +63,25 @@ class Node
     links.to_s.scan("@valid_word=true").count
   end
 
-  # probably need to refactor
   def suggest(str)
     match = search(str)
     suggestions = find_valid_words(match.links)
-    suggestions << match.value if match.valid_word
-    suggestions << match.select_count if match.valid_word
-    suggestions = suggestions.each_slice(2).to_a
-    suggestions = suggestions.sort_by { |name, count| count }.reverse
-    suggestions.collect { |idx| idx[0] }
+    add_current_word(match, suggestions) if match.valid_word
+    suggestions = slice_into_pairs(suggestions)
+    suggestions = sort_and_collect_suggestions(suggestions)
   end
 
-  def reorder(list)
-    # need code to reorder here, or possibly modify find_valid_words to return a hash with the counts instead of just the sug
+  def add_current_word(match, suggestions)
+    suggestions.concat( [match.value, match.select_count] )
+  end
+
+  def slice_into_pairs(arr)
+    arr.each_slice(2).to_a
+  end
+
+  def sort_and_collect_suggestions(list)
+    list = list.sort_by { |name, count| count }.reverse
+    list.collect { |idx| idx[0] }
   end
 
   def select(selection)
