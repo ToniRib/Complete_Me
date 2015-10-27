@@ -1,27 +1,23 @@
 require_relative 'node'
 
 class CompleteMe
-  attr_reader :dictionary, :center
+  attr_reader :count, :center
 
   def initialize
     @center = Node.new
+    @count = 0
   end
 
   def insert(word)
     center.insert(word)
+    @count += 1
   end
 
   def populate(list)
-    t1 = Time.now
     list.split("\n").each do |word|
       center.insert(word)
     end
-    t2 = Time.now
-    puts "Elapsed Time: #{t2 - t1} seconds"
-  end
-
-  def count
-    @center.count_valid_words
+    @count = center.count_valid_words
   end
 
   def suggest(str)
@@ -32,8 +28,9 @@ end
 if __FILE__ == $0
   completion = CompleteMe.new
   completion.insert('toni')
-  completion.count
+  puts completion.count
   dict = File.read("/usr/share/dict/words")
   completion.populate(dict)
+  puts completion.count
   p completion.suggest('piz')
 end
