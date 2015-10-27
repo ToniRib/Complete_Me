@@ -14,15 +14,25 @@ class CompleteMe
     @count += 1
   end
 
+  # need tests for incoming cases like insert
   def populate(list)
-    list.split("\n").each do |word|
-      center.insert(word)
-    end
+    list = convert_to_array(list)
+
+    list.each { |word| center.insert(word) }
+
     @count = center.count_valid_words
   end
 
   def suggest(str)
     center.suggest(str)
+  end
+
+  def convert_to_array(list)
+    array?(list) ? list : list.split("\n")
+  end
+
+  def array?(list)
+    list.is_a?(Array)
   end
 
   def string?(word)

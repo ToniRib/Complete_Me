@@ -62,6 +62,7 @@ class Node
     links.to_s.scan("@valid_word=true").count
   end
 
+  # probably need to refactor
   def suggest(str)
     match = search(str)
     suggestions = find_valid_words(match.links)
