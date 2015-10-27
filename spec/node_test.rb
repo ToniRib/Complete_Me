@@ -129,4 +129,27 @@ class NodeTest < Minitest::Test
 
     assert node.suggest('can').include?('can')
   end
+
+  def test_empty_node_has_no_valid_words
+    node = Node.new
+
+    assert_equal 0, node.count_valid_words
+  end
+
+  def test_count_returns_one_if_node_only_contains_one_valid_word
+    node = Node.new
+    node.insert('hello')
+
+    assert_equal 1, node.count_valid_words
+  end
+
+  def test_counts_returns_total_number_of_valid_words
+    node = Node.new
+    words = %w(can cannibal canister cannoli cane a)
+    words.each do |word|
+      node.insert(word)
+    end
+
+    assert_equal 6, node.count_valid_words
+  end
 end

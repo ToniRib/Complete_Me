@@ -1,4 +1,3 @@
-require_relative 'dictionary'
 require_relative 'node'
 
 class CompleteMe
@@ -6,32 +5,27 @@ class CompleteMe
 
   def initialize
     @center = Node.new
-
-    #maybe don't need dictionary, will need to consider
-    @dictionary = Dictionary.new
   end
 
   def insert(word)
-    @dictionary.insert(word)
-    @center.insert(word)
+    center.insert(word)
   end
 
   def populate(list)
-    @dictionary.mass_insert(list)
     t1 = Time.now
-    @dictionary.words.each do |word|
-      @center.insert(word)
+    list.split("\n").each do |word|
+      center.insert(word)
     end
     t2 = Time.now
     puts "Elapsed Time: #{t2 - t1} seconds"
   end
 
   def count
-    @dictionary.words.count
+    @center.count_valid_words
   end
 
   def suggest(str)
-    @center.suggest(str)
+    center.suggest(str)
   end
 end
 

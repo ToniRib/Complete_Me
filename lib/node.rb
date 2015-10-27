@@ -57,6 +57,10 @@ class Node
     matches.flatten
   end
 
+  def count_valid_words
+    links.to_s.scan("@valid_word=true").count
+  end
+
   def suggest(str)
     match = search(str)
     suggestions = find_valid_words(match.links)
