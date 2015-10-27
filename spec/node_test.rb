@@ -92,6 +92,15 @@ class NodeTest < Minitest::Test
     assert_equal 'acd', node.links['a'].links['c'].links['d'].value
   end
 
+  def test_can_only_insert_one_string_at_a_time
+    node = Node.new
+
+    fail_message = 'Second argument must be an integer'
+
+    e = assert_raises(RuntimeError) { node.insert('hello', 'hi') }
+    assert_equal fail_message, e.message
+  end
+
   def test_sets_node_whose_value_is_inserted_string_to_valid_word
     node = Node.new
     node.insert('hi')
@@ -99,10 +108,6 @@ class NodeTest < Minitest::Test
     refute node.valid_word
     refute node.links['h'].valid_word
     assert node.links['h'].links['i'].valid_word
-  end
-
-  def test_finds_child_nodes_that_are_valid_words
-    skip
   end
 
   def test_finds_node_with_given_value
@@ -189,7 +194,6 @@ class NodeTest < Minitest::Test
 
   def test_only_one_node_can_be_selected_at_a_time
     node = Node.new
-    # binding.pry
     node.insert('hello')
 
     fail_message = "wrong number of arguments (2 for 1)"

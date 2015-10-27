@@ -17,6 +17,8 @@ class Node
 
   # need to refactor
   def insert(str, position = 0)
+    fail 'Second argument must be an integer' unless position.is_a?(Fixnum)
+
     @valid_word = true if str.length == position
 
     return if str[position].nil?
