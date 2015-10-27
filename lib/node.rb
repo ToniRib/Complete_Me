@@ -45,6 +45,8 @@ class Node
 
     return links[letter] if end_of_string?(str, pos)
 
+    fail 'Cannot find search string in Trie' if link_does_not_exist(letter)
+    
     links[letter].search(str, pos + 1)
   end
 

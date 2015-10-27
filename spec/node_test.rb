@@ -324,4 +324,14 @@ class NodeTest < Minitest::Test
 
     assert_equal expected, node.slice_into_pairs(input)
   end
+
+  def test_returns_error_if_search_string_does_not_exist
+    node = Node.new
+    node.insert('hello')
+
+    fail_message = 'Cannot find search string in Trie' 
+
+    e = assert_raises(RuntimeError) { node.search('apple') }
+    assert_equal fail_message, e.message
+  end
 end

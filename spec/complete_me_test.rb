@@ -132,6 +132,15 @@ class CompleteMeTest < Minitest::Test
     assert_equal fail_message, e.message
   end
 
+  def test_insert_rejects_two_string_arguments
+    completion = CompleteMe.new
+
+    fail_message = 'wrong number of arguments (2 for 1)'
+
+    e = assert_raises(ArgumentError) { completion.insert('hello', 'hi') }
+    assert_equal fail_message, e.message
+  end
+
   def test_insert_rejects_number
     completion = CompleteMe.new
     fail_message = 'insert only accepts single string argument'
@@ -260,5 +269,25 @@ class CompleteMeTest < Minitest::Test
     assert_equal 'beat', matches[0]
     assert_equal 'bean', matches[1]
     assert_equal 'better', matches[2]
+  end
+
+  def test_returns_error_if_suggested_string_does_not_exist
+    completion = CompleteMe.new
+    completion.insert('banana')
+
+    fail_message = 'Cannot find search string in Trie'
+
+    e = assert_raises(RuntimeError) { completion.suggest('app') }
+    assert_equal fail_message, e.message
+  end
+
+  def test_returns_error_if_selected_str_does_not_exist
+    completion = CompleteMe.new
+    completion.insert('banana')
+
+    fail_message = 'Cannot find search string in Trie'
+
+    e = assert_raises(RuntimeError) { completion.select('app', 'apple') }
+    assert_equal fail_message, e.message
   end
 end
