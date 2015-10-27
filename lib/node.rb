@@ -70,7 +70,7 @@ class Node
     suggestions << match.value if match.valid_word
     suggestions << match.select_count if match.valid_word
     suggestions = suggestions.each_slice(2).to_a
-    suggestions.sort_by { |name, count| count }.reverse
+    suggestions = suggestions.sort_by { |name, count| count }.reverse
     suggestions.collect { |idx| idx[0] }
   end
 

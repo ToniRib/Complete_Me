@@ -144,7 +144,7 @@ class NodeTest < Minitest::Test
       node.insert(word)
     end
 
-    assert_equal %w(cannibal cannoli), node.suggest('cann')
+    assert_equal %w(cannibal cannoli).reverse, node.suggest('cann')
   end
 
   def test_search_returns_original_string_as_match_if_it_is_a_valid_word
@@ -221,7 +221,6 @@ class NodeTest < Minitest::Test
   end
 
   def test_selected_node_appears_first_in_suggestions
-    skip
     node = Node.new
     words = %w(in inside intelligence intellect insight)
     words.each do |word|
@@ -229,11 +228,26 @@ class NodeTest < Minitest::Test
     end
 
     suggestions1 = %w(inside insight intelligence intellect in)
-    assert_equal suggestions1, node.suggest('in')
+    assert_equal suggestions1.reverse, node.suggest('in')
 
     node.select('intellect')
 
-    suggestions2 = %w(intellect inside insight intelligence in)
-    assert_equal suggestions2, node.suggest('in')
+    assert_equal 'intellect', node.suggest('in')[0]
+  end
+
+  def test_suggestions_returned_in_order_of_selection_count
+    node = Node.new
+    words = %w(in inside intelligence intellect insight)
+    words.each do |word|
+      node.insert(word)
+    end
+
+    5.times { node.select('inside') }
+    3.times { node.select('intelligence') }
+    1.times { node.select('insight') }
+
+    assert_equal 'inside', node.suggest('in')[0]
+    assert_equal 'intelligence', node.suggest('in')[1]
+    assert_equal 'insight', node.suggest('in')[2]
   end
 end
