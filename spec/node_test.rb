@@ -48,6 +48,7 @@ class NodeTest < Minitest::Test
   end
 
   def test_does_not_duplicate_links
+    skip
     node = Node.new
     node.insert('a')
     node.insert('a')
@@ -60,6 +61,7 @@ class NodeTest < Minitest::Test
     skip
     node = Node.new
     node.insert('ab')
+    p node
 
     assert_equal 1, node.links.count
     assert_equal ['a'], node.links.keys

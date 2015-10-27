@@ -14,7 +14,19 @@ class Node
     @valid_word
   end
 
-  def insert(word)
-    @links[word] = Node.new(word)
+  def insert(str, position = 0)
+    return if str[position].nil?
+
+    letter = str[position]
+
+    if links[letter] == nil
+      links[letter] = Node.new(str[0..position])
+    end
+    links[letter].insert(str, position + 1)
   end
 end
+
+node = Node.new
+node.insert('abc')
+# binding.pry
+p node
