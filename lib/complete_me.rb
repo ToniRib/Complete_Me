@@ -9,6 +9,7 @@ class CompleteMe
   end
 
   def insert(word)
+    fail 'insert method only accepts a single string argument' unless string?(word)
     center.insert(word)
     @count += 1
   end
@@ -22,6 +23,10 @@ class CompleteMe
 
   def suggest(str)
     center.suggest(str)
+  end
+
+  def string?(word)
+    word.is_a?(String)
   end
 end
 
