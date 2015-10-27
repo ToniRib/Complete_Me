@@ -25,9 +25,7 @@ class Node
 
     letter = str[position]
 
-    if links[letter].nil?
-      links[letter] = Node.new(str[0..position])
-    end
+    links[letter] = Node.new(str[0..position]) if links[letter].nil?
 
     links[letter].insert(str, position + 1)
   end
@@ -71,6 +69,10 @@ class Node
     suggestions = find_valid_words(match.links)
     suggestions << match.value if match.valid_word
     suggestions
+  end
+
+  def reorder(list)
+    # need code to reorder here, or possibly modify find_valid_words to return a hash with the counts instead of just the sug
   end
 
   def select(selection)

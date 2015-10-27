@@ -117,6 +117,14 @@ class NodeTest < Minitest::Test
     assert_equal 'hello', node.search('hello').value
   end
 
+  def test_finds_node_with_different_value
+    node = Node.new
+    node.insert('happy')
+    node.insert('hello')
+
+    assert_equal 'happy', node.search('happy').value
+  end
+
   def test_returns_possible_matches
     node = Node.new
     words = %w(can cannibal canister cannoli cane)
@@ -127,6 +135,15 @@ class NodeTest < Minitest::Test
     all_matches = node.suggest('ca')
 
     assert_equal [], words - all_matches
+  end
+
+  def test_returns_different_matches_for_different_suggested_string
+    node = Node.new
+    words = %w(can cannibal canister cannoli cane)
+    words.each do |word|
+      node.insert(word)
+    end
+
     assert_equal %w(cannibal cannoli), node.suggest('cann')
   end
 
@@ -170,6 +187,7 @@ class NodeTest < Minitest::Test
     node.select('hell')
 
     assert_equal 1, node.search('hell').select_count
+    assert_equal 0, node.search('hello').select_count
   end
 
   def test_node_can_be_selected_more_than_once
@@ -200,5 +218,22 @@ class NodeTest < Minitest::Test
 
     e = assert_raises(ArgumentError) { node.select('hello', 'hi') }
     assert_equal fail_message, e.message
+  end
+
+  def test_selected_node_appears_first_in_suggestions
+    skip
+    node = Node.new
+    words = %w(in inside intelligence intellect insight)
+    words.each do |word|
+      node.insert(word)
+    end
+
+    suggestions1 = %w(inside insight intelligence intellect in)
+    assert_equal suggestions1, node.suggest('in')
+
+    node.select('intellect')
+
+    suggestions2 = %w(intellect inside insight intelligence in)
+    assert_equal suggestions2, node.suggest('in')
   end
 end
