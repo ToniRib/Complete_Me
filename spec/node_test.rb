@@ -104,11 +104,10 @@ class NodeTest < Minitest::Test
   end
 
   def test_finds_node_with_given_value
-    skip # need to rethink this
     node = Node.new
     node.insert('hello')
 
-    assert_equal 'hello', node.search('hello')
+    assert_equal 'hello', node.search('hello').value
   end
 
   def test_returns_possible_matches
