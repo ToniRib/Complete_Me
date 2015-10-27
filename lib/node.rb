@@ -16,19 +16,18 @@ class Node
     @valid_word
   end
 
-  # need to refactor
   def insert(str, pos = 0)
+    return if str.empty?
+
     fail 'Second argument must be an integer' unless pos.is_a?(Fixnum)
-
-    @valid_word = true if str.length == pos
-
-    return if str[pos].nil?
 
     letter = str[pos]
 
     links[letter] = Node.new(str[0..pos]) if links[letter].nil?
 
-    links[letter].insert(str, pos + 1)
+    links[letter].valid_word = true if end_of_string?(str, pos)
+
+    links[letter].insert(str, pos + 1) unless end_of_string?(str, pos)
   end
 
   def search(str, pos = 0)
