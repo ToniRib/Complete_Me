@@ -16,8 +16,9 @@ class Node
 
   def insert(str, position = 0)
     @valid_word = true if str.length == position
+
     return if str[position].nil?
-    
+
     letter = str[position]
 
     if links[letter] == nil

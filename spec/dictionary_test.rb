@@ -40,10 +40,26 @@ class DictionaryTest < Minitest::Test
     end
   end
 
-  def test_duplicate_words_are_ignored
+  def test_duplicate_words_in_string_are_ignored
     dictionary = Dictionary.new
     list = "banana\napple\nbanana\npear"
     dictionary.mass_insert(list)
+
+    assert_equal 3, dictionary.words.count
+  end
+
+  def test_can_add_single_word_then_multiple_words
+    dictionary = Dictionary.new
+    dictionary.insert('banana')
+    dictionary.mass_insert("apple\norange\npear")
+
+    assert_equal 4, dictionary.words.count
+  end
+
+  def test_duplicate_words_added_from_separate_insert_are_ignored
+    dictionary = Dictionary.new
+    dictionary.insert('banana')
+    dictionary.mass_insert("apple\nbanana\npear")
 
     assert_equal 3, dictionary.words.count
   end

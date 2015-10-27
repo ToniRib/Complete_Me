@@ -12,17 +12,21 @@ class CompleteMe
   def insert(word)
     @dictionary.insert(word)
     @center.insert(word)
-    binding.pry
   end
 
   def populate(list)
     @dictionary.mass_insert(list)
+  end
+
+  def count
+    @dictionary.words.count
   end
 end
 
 if __FILE__ == $0
   completion = CompleteMe.new
   completion.insert('toni')
+  completion.count
   # binding.pry
   dict = File.read("/usr/share/dict/words")
   completion.populate(dict)

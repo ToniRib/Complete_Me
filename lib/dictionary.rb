@@ -11,11 +11,13 @@ class Dictionary
     @words << word unless word_exists(word)
   end
 
-  def mass_insert(list)
-    list = stringify(list) if list.is_a?(Array)
+  # should probably include rejection of other data types
 
-    list.split("\n").each do |word|
-      insert(word) unless word_exists(word)
+  def mass_insert(list)
+    if not_array?(list)
+      @words = words | list.split("\n")
+    else
+      @words = words | list
     end
   end
 
@@ -23,7 +25,7 @@ class Dictionary
     words.include?(word)
   end
 
-  def stringify(list)
-    list.join("\n")
+  def not_array?(list)
+    !list.is_a?(Array)
   end
 end
