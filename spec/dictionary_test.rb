@@ -91,4 +91,11 @@ class DictionaryTest < Minitest::Test
 
     assert_equal 1, dictionary.words.count
   end
+
+  def test_rejects_non_string_or_array_inputs
+    dictionary = Dictionary.new
+
+    e = assert_raises("RuntimeError") { dictionary.mass_insert({ 'a' => 'apple' }) }
+    assert_equal("Unrecognized input data type", e.message)
+  end
 end

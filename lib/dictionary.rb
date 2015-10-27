@@ -14,10 +14,12 @@ class Dictionary
   # should probably include rejection of other data types
 
   def mass_insert(list)
-    if not_array?(list)
+    if string?(list)
       @words = words | list.split("\n")
-    else
+    elsif array?(list)
       @words = words | list
+    else
+      fail "Unrecognized input data type"
     end
   end
 
@@ -25,7 +27,11 @@ class Dictionary
     words.include?(word)
   end
 
-  def not_array?(list)
-    !list.is_a?(Array)
+  def string?(list)
+    list.is_a?(String)
+  end
+
+  def array?(list)
+    list.is_a?(Array)
   end
 end

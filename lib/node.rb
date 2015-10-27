@@ -62,10 +62,3 @@ class Node
     find_valid_words(match.links)
   end
 end
-
-if __FILE__ == $0
-  node = Node.new
-  node.insert('abc')
-  # binding.pry
-  p node
-end

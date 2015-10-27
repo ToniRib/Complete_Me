@@ -9,19 +9,16 @@ class NodeTest < Minitest::Test
 
   def test_node_value_is_empty_string_by_default
     node = Node.new
-
     assert_equal '', node.value
   end
 
   def test_node_has_a_value
     node = Node.new('p')
-
     assert_equal 'p', node.value
   end
 
   def test_node_is_not_a_word_by_default
     node = Node.new('piz')
-
     refute node.word?
   end
 
@@ -117,7 +114,9 @@ class NodeTest < Minitest::Test
       node.insert(word)
     end
 
-    # assert_equal words, node.suggest('ca')
+    all_matches = node.suggest('ca')
+
+    assert_equal [], words - all_matches
     assert_equal %w(cannibal cannoli), node.suggest('cann')
   end
 end
