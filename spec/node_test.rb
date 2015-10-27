@@ -48,7 +48,8 @@ class NodeTest < Minitest::Test
   def test_single_letter_node_has_empty_links_hash
     node = Node.new('a')
 
-    assert_equal Hash.new, node.links
+    expected = {}
+    assert_equal expected, node.links
   end
 
   def test_can_insert_link_to_single_letter_node
@@ -191,7 +192,7 @@ class NodeTest < Minitest::Test
     expected = %w(cannibal cannoli)
     matches = node.suggest('cann')
 
-    assert_equal expected, node.suggest('cann').sort
+    assert_equal expected, matches.sort
   end
 
   def test_search_returns_original_string_as_match_if_it_is_a_valid_word
@@ -278,7 +279,7 @@ class NodeTest < Minitest::Test
     node = Node.new
     node.insert('hello')
 
-    fail_message = "wrong number of arguments (2 for 1)"
+    fail_message = 'wrong number of arguments (2 for 1)'
 
     e = assert_raises(ArgumentError) { node.select('hello', 'hi') }
     assert_equal fail_message, e.message

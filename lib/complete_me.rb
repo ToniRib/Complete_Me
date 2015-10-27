@@ -17,9 +17,11 @@ class CompleteMe
 
   # need tests for incoming cases like insert
   def populate(list)
+    fail 'only accepts strings or arrays' unless string?(list) || array?(list)
+
     list = convert_to_array(list)
 
-    list.each { |word| center.insert(word.downcase) }
+    list.each { |word| center.insert(word) }
 
     @count = center.count_valid_words
   end
