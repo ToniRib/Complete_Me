@@ -21,11 +21,38 @@ class Node
 
     letter = str[position]
 
-    if links[letter] == nil
+    if links[letter].nil?
       links[letter] = Node.new(str[0..position])
     end
 
     links[letter].insert(str, position + 1)
+  end
+
+  def search(str, position = 0)
+    letter = str[position]
+
+    return links if links[letter].nil?
+
+    links[letter].search(str, position + 1)
+  end
+
+  # need to refactor
+  def find_valid_words(links)
+    matches = []
+
+    links.keys.each do |k|
+      if links[k].valid_word
+        matches.push(links[k].value)
+      end
+      matches << find_valid_words(links[k].links) if links[k].links != {}
+    end
+
+    matches.flatten
+  end
+
+  def suggest(str)
+    links_of_match = search(str)
+    find_valid_words(links_of_match)
   end
 end
 

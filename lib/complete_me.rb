@@ -6,6 +6,8 @@ class CompleteMe
 
   def initialize
     @center = Node.new
+
+    #maybe don't need dictionary, will need to consider
     @dictionary = Dictionary.new
   end
 
