@@ -245,4 +245,20 @@ class CompleteMeTest < Minitest::Test
     assert_equal 'bean', matches[1]
     assert_equal 'better', matches[2]
   end
+
+  def test_selection_does_not_consider_first_argument
+    completion = CompleteMe.new
+
+    completion.populate("bear\nbeat\nbean\nbeanpole\nbetter")
+
+    6.times { completion.select('be', 'beat') }
+    4.times { completion.select('bea', 'bean') }
+    2.times { completion.select('bett', 'better') }
+
+    matches = completion.suggest('be')
+
+    assert_equal 'beat', matches[0]
+    assert_equal 'bean', matches[1]
+    assert_equal 'better', matches[2]
+  end
 end

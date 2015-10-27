@@ -59,3 +59,4 @@ if __FILE__ == $PROGRAM_NAME
   puts completion.count
   p completion.suggest('piz')
 end
+2
