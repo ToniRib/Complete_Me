@@ -11,8 +11,6 @@ class Dictionary
     @words << word unless word_exists(word)
   end
 
-  # should probably include rejection of other data types
-
   def mass_insert(list)
     if string?(list)
       @words = words | list.split("\n")

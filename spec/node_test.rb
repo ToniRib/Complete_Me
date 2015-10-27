@@ -97,7 +97,7 @@ class NodeTest < Minitest::Test
   end
 
   def test_finds_child_nodes_that_are_valid_words
-
+    skip
   end
 
   def test_finds_node_with_given_value
@@ -118,5 +118,15 @@ class NodeTest < Minitest::Test
 
     assert_equal [], words - all_matches
     assert_equal %w(cannibal cannoli), node.suggest('cann')
+  end
+
+  def test_search_returns_original_string_as_match_if_it_is_a_valid_word
+    node = Node.new
+    words = %w(can cannibal canister cannoli cane)
+    words.each do |word|
+      node.insert(word)
+    end
+
+    assert node.suggest('can').include?('can')
   end
 end

@@ -59,6 +59,8 @@ class Node
 
   def suggest(str)
     match = search(str)
-    find_valid_words(match.links)
+    suggestions = find_valid_words(match.links)
+    suggestions << match.value if match.valid_word
+    suggestions
   end
 end

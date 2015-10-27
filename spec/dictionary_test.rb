@@ -64,14 +64,14 @@ class DictionaryTest < Minitest::Test
     assert_equal 3, dictionary.words.count
   end
 
-  def test_returns_true_if_word_exists_in_dictionary
+  def test_word_exists_returns_true_if_word_exists_in_dictionary
     dictionary = Dictionary.new
     dictionary.insert('banana')
 
     assert dictionary.word_exists('banana')
   end
 
-  def test_returns_false_if_word_is_not_in_dictionary
+  def test_word_exists_returns_false_if_word_is_not_in_dictionary
     dictionary = Dictionary.new
     dictionary.insert('banana')
 
