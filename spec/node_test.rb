@@ -413,4 +413,30 @@ class NodeTest < Minitest::Test
 
     assert_equal expected, node.sort_and_collect_suggestions(input)
   end
+
+  def test_recognizes_empty_node_as_node_with_no_links_and_not_valid_word
+    node = Node.new
+
+    assert node.no_links_and_not_valid_word
+  end
+
+  def test_recognizes_single_node_as_node_with_no_links_and_not_valid_word
+    node = Node.new('a')
+
+    assert node.no_links_and_not_valid_word
+  end
+
+  def test_recognizes_if_node_has_links
+    node = Node.new
+    node.insert('hi')
+
+    refute node.no_links_and_not_valid_word
+  end
+
+  def test_recognizes_if_node_is_valid_word
+    node = Node.new
+    node.valid_word = true
+
+    refute node.no_links_and_not_valid_word
+  end
 end

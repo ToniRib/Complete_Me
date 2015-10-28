@@ -74,10 +74,6 @@ class Node
     matches.flatten
   end
 
-  def link_exists(cur_links, letter)
-    !cur_links[letter].empty?
-  end
-
   def value_count_pair
     [value, select_count]
   end
