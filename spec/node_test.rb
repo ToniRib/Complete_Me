@@ -350,7 +350,8 @@ class NodeTest < Minitest::Test
     assert_equal fail_message, e.message
   end
 
-  def test_
+  def test_find_words
+    skip
     # write tests for find_words
   end
 end

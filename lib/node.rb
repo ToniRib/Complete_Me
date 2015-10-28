@@ -22,9 +22,16 @@ class Node
     fail 'Second argument must be an integer' unless fixnum?(pos)
 
     letter = str[pos]
+    create_link_if_it_doesnt_exist(str, letter, pos)
 
+    set_valid_word_or_keep_inserting_links(str, letter, pos)
+  end
+
+  def create_link_if_it_doesnt_exist(str, letter, pos)
     links[letter] = Node.new(str[0..pos]) if link_does_not_exist(letter)
+  end
 
+  def set_valid_word_or_keep_inserting_links(str, letter, pos)
     if end_of_string?(str, pos)
       links[letter].valid_word = true
     else
