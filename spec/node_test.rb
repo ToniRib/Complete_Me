@@ -460,10 +460,10 @@ class NodeTest < Minitest::Test
 
   def test_suggest_all_returns_only_selections_that_include_substring
     node = Node.new
-    words = %w(appetite apple happy pepper pp banana pear)
+    words = %w(appetite apple happy pepper pp banana pear happyhesh)
     words.each { |word| node.insert(word) }
 
-    expected = %w(appetite apple happy pepper pp).reverse
+    expected = %w(appetite apple happy happyhesh pepper pp).reverse
 
     assert_equal expected, node.suggest_all('pp')
   end
