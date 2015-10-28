@@ -440,34 +440,46 @@ class NodeTest < Minitest::Test
     refute node.no_links_and_not_valid_word
   end
 
-  def test_suggest_all_finds_word_that_starts_with_string
+  def test_find_substring_finds_word_that_starts_with_string
     node = Node.new
     node.insert('app')
 
-    assert_equal ['app'], node.suggest_all('ap')
+    assert_equal ['app', 0], node.find_words_and_counts_with_substring('ap')
   end
 
-  def test_suggest_all_finds_word_that_contains_string_in_middle
+  def test_find_substring_finds_word_that_contains_string_in_middle
     node = Node.new
     node.insert('happy')
 
-    assert_equal ['happy'], node.suggest_all('ap')
+    assert_equal ['happy', 0], node.find_words_and_counts_with_substring('ap')
   end
 
-  def test_suggest_all_finds_multiple_words_matching_string
+  def test_find_substring_finds_multiple_words_matching_string
     node = Node.new
     words = %w(appetite apple happy pepper)
     words.each { |word| node.insert(word) }
 
-    assert_equal words, node.suggest_all('pp')
+    expected = ['appetite', 0, 'apple', 0, 'happy', 0, 'pepper', 0]
+
+    assert_equal expected, node.find_words_and_counts_with_substring('pp')
   end
 
-  def test_suggest_all_ignores_words_that_dont_match
+  def test_find_substring_ignores_words_that_dont_match
     node = Node.new
     words = %w(appetite apple happy pepper pp banana pear)
     words.each { |word| node.insert(word) }
 
-    expected = %w(appetite apple happy pepper pp)
+    expected = ['appetite', 0, 'apple', 0, 'happy', 0, 'pepper', 0, 'pp', 0]
+
+    assert_equal expected, node.find_words_and_counts_with_substring('pp')
+  end
+
+  def test_suggest_all_returns_only_selections_that_include_substring
+    node = Node.new
+    words = %w(appetite apple happy pepper pp banana pear)
+    words.each { |word| node.insert(word) }
+
+    expected = %w(appetite apple happy pepper pp).reverse
 
     assert_equal expected, node.suggest_all('pp')
   end

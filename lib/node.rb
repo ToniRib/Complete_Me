@@ -93,17 +93,33 @@ class Node
 
   def suggest(str)
     suggestions = search(str).find_words_and_counts
+    slice_sort_and_collect(suggestions)
+  end
+
+  def suggest_all(str)
+    suggestions = find_words_and_counts_with_substring(str)
+    slice_sort_and_collect(suggestions)
+  end
+
+  def slice_sort_and_collect(suggestions)
     suggestions = slice_into_pairs(suggestions)
     sort_and_collect_suggestions(suggestions)
   end
 
-  def suggest_all(str)
-    # binding.pry
+  def find_words_and_counts_with_substring(str)
     matches = []
-    matches.push(value) if valid_word && value.include?(str)
 
-    matches << links.keys.map { |k| links[k].suggest_all(str) }
+    return value_count_pair if word_is_valid_and_includes_string(str)
+
+    matches << links.keys.map do |k|
+      links[k].find_words_and_counts_with_substring(str)
+    end
+
     matches.flatten
+  end
+
+  def word_is_valid_and_includes_string(str)
+    word? && value.include?(str)
   end
 
   def slice_into_pairs(arr)
