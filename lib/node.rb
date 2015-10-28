@@ -1,5 +1,3 @@
-require 'pry'
-
 # Class for each node of the Trie
 class Node
   attr_reader :value

@@ -13,9 +13,10 @@ The main classes for this project are `CompleteMe` (the Trie class) and `Node`.
 
 * __insert(word)__ - inserts the given word into the Trie
 * __populate(list)__ - mass inserts many words into the Trie. The list can either be a string separated by new line characters (such as `"apple\nbanana\npear"`) or an array of strings
-* __suggest(string)__ - returns an array of suggestions that begin with the given string. If the string is a word itself it will also be returned
+* __suggest(string)__ - returns an array of suggestions that begin with the given string. If the string is a word itself it will also be returned. Returns an error if no strings begin with the suggestion.
+* __suggest_substring(string)__ - returns an array of suggestions that contain the substring in any part of the word. Returns an error if no strings contain the suggestion.
 * __count__ - returns the number of valid words in the Trie
-* __select(substring, string)__ - allows the user to 'promote' the given string, thus ensuring it is at the beginning of the array of suggestions. Strings can be selected more than once, and the array of suggestions will be output based on the number of selections each string has. At this point, substring is ignored.
+* __select(substring, string)__ - allows the user to 'promote' the given string, thus ensuring it is at the beginning of the array of suggestions. Strings can be selected more than once, and the array of suggestions will be output based on the number of selections each string has. At this point, substring is ignored. Select returns an error if the string is not found in the Trie.
 
 #### Examples
 
@@ -56,10 +57,24 @@ The following is an example as run with [pry](https://github.com/pry/pry) from t
 [9] pry(main)> completion.suggest('piz')
 => ["pize", "pizzle", "pizzicato", "pizzeria", "pizza"]
 
-[10] pry(main)> completion.select('piz', 'pizzeria')
+[10] pry(main)> completion.suggest_substring('piz')
+=> ["unlycanthropize",
+ "syncopize",
+ "stylopized",
+ "stylopization",
+ "spizzerinctum",
+ < part of array omitted for brevity >
+ "papize",
+ "pize",
+ "pizzle",
+ "pizzicato",
+ "pizzeria",
+ "pizza"]
+
+[11] pry(main)> completion.select('piz', 'pizzeria')
 => 1
 
-[11] pry(main)> completion.suggest('piz')
+[12] pry(main)> completion.suggest('piz')
 => ["pizzeria", "pizzicato", "pizzle", "pize", "pizza"]
 ```
 
@@ -101,6 +116,14 @@ completion.populate(full_addresses)
 ```
 
 After running the `populate` command, any of the other `CompleteMe` methods can be used.
+
+### Shoes GUI
+
+The project comes with a graphical user interface built with [Shoes](http://shoesrb.com/) that can be run if you have the Shoes software downloaded.
+
+If you have Shoes, you can open the file `lib/shoes_app.rb` from the Shoes program to launch the GUI. The GUI allows you to type in a string and see the resulting matches. It does not contain the `select` functionality at this time.
+
+![Image of Shoes App](./image/shoes_app.png)
 
 ### Test Suite
 
