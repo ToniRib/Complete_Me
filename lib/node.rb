@@ -82,7 +82,7 @@ class Node
     count = 0
     count += 1 if valid_word
 
-    links.keys.each { |k| count += links[k].count_valid_words }
+    links.each_key { |k| count += links[k].count_valid_words }
 
     count
   end
