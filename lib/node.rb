@@ -61,14 +61,14 @@ class Node
     str.length == pos + 1
   end
 
-  def find_words
+  def find_words_and_counts
     return nil if no_links_and_not_valid_word
 
     matches = []
     matches.concat(value_count_pair) if word?
 
     matches << links.keys.map do |k|
-      links[k].find_words
+      links[k].find_words_and_counts
     end
 
     matches.flatten
@@ -100,7 +100,7 @@ class Node
   end
 
   def suggest(str)
-    suggestions = search(str).find_words
+    suggestions = search(str).find_words_and_counts
     suggestions = slice_into_pairs(suggestions)
     sort_and_collect_suggestions(suggestions)
   end

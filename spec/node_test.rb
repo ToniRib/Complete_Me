@@ -350,8 +350,67 @@ class NodeTest < Minitest::Test
     assert_equal fail_message, e.message
   end
 
-  def test_find_words
-    skip
-    # write tests for find_words
+  def test_returns_error_if_suggest_string_does_not_exist
+    node = Node.new
+    node.insert('hello')
+
+    fail_message = 'Cannot find search string in Trie'
+
+    e = assert_raises(RuntimeError) { node.suggest('apple') }
+    assert_equal fail_message, e.message
+  end
+
+  def tests_find_returns_nil_if_node_has_no_valid_words
+    node = Node.new
+
+    refute node.find_words_and_counts
+  end
+
+  def test_finds_single_word_with_counts_linked_to_node
+    node = Node.new
+    node.insert('hello')
+
+    expected = ['hello', 0]
+
+    assert_equal expected, node.find_words_and_counts
+  end
+
+  def test_finds_all_valid_words_with_default_counts_linked_to_node
+    node = Node.new
+    words = %w(in inside intelligence intellect insight)
+    words.each do |word|
+      node.insert(word)
+    end
+
+    expected = ['in', 0, 'inside', 0, 'insight', 0, 'intelligence', 0, 'intellect', 0]
+
+    assert_equal expected, node.find_words_and_counts
+  end
+
+  def test_finds_all_valid_words_with_select_counts_linked_to_node
+    node = Node.new
+    words = %w(in inside intelligence intellect insight)
+    words.each do |word|
+      node.insert(word)
+    end
+
+    5.times { node.select('inside') }
+    3.times { node.select('intellect') }
+
+    expected = ['in', 0, 'inside', 5, 'insight', 0,
+                'intelligence', 0, 'intellect', 3]
+
+    assert_equal expected, node.find_words_and_counts
+  end
+
+  def test_sort_and_collect_suggestions_returns_suggestions_in_sorted_order
+    node = Node.new
+
+    input = [['in', 0], ['inside', 5], ['insight', 0],
+             ['intelligence', 0], ['intellect', 3]]
+
+    expected = %w(inside intellect insight intelligence in)
+
+    assert_equal expected, node.sort_and_collect_suggestions(input)
   end
 end
