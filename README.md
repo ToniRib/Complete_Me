@@ -121,7 +121,7 @@ After running the `populate` command, any of the other `CompleteMe` methods can 
 
 The project comes with a graphical user interface built with [Shoes](http://shoesrb.com/) that can be run if you have the Shoes software downloaded.
 
-If you have Shoes, you can open the file `lib/shoes_app.rb` from the Shoes program to launch the GUI. The GUI allows you to type in a string and see the resulting matches. It does not contain the `select` functionality at this time.
+If you have Shoes, you can open the file `lib/shoes_app.rb` from the Shoes program to launch the GUI. The GUI allows you to type in a string and see the resulting matches from either `suggest` or `suggest_substring`. It does not contain the `select` functionality at this time.
 
 <img src="https://github.com/ToniRib/Complete_Me/blob/master/images/shoes_app.png?raw=true" alt="Drawing" style="width: 200px;"/>
 
