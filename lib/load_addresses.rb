@@ -18,16 +18,16 @@ completion = CompleteMe.new
 loader = LoadAddresses.new
 
 puts 'Loading database of Denver addresses...'
-full_addresses = loader.load("./addresses/addresses.csv")
+full_addresses = loader.load('./addresses/addresses.csv')
 
 puts 'Populating Trie with Denver addresses...'
 completion.populate(full_addresses)
 
-puts "Falling Rock Tap House:"
+puts 'Falling Rock Tap House:'
 puts completion.suggest('1919 Blake')
 
-puts "Promoting Turing"
+puts 'Promoting Turing'
 completion.select('1510', '1510 Blake St')
 
-puts "10 other 1510 addresses:"
+puts '10 other 1510 addresses:'
 puts completion.suggest('1510')[0..10]

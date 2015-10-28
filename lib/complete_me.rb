@@ -29,11 +29,12 @@ class CompleteMe
     center.suggest(str)
   end
 
-  def select(str, selection)
+  def select(_str, selection)
     center.select(selection)
   end
 
   private
+
   def convert_to_array(list)
     array?(list) ? list : list.split("\n")
   end
@@ -49,23 +50,4 @@ class CompleteMe
   def array?(list)
     list.is_a?(Array)
   end
-end
-
-if __FILE__ == $PROGRAM_NAME
-  completion = CompleteMe.new
-  completion.insert('toni')
-  dict = File.read('/usr/share/dict/words')
-  completion.populate(dict)
-
-  puts "Valid Words in Trie: #{completion.count}"
-  puts ""
-
-  puts "Suggestions for (toni):"
-  p completion.suggest('toni')
-  puts ""
-
-  completion.select('toni', 'tonicity')
-
-  puts "Suggestions for (toni) after selecting tonicity:"
-  p completion.suggest('toni')
 end

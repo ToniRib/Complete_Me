@@ -62,7 +62,7 @@ class Node
   end
 
   def find_words
-    return nil if links.empty? && !word?
+    return nil if no_links_and_not_valid_word
 
     matches = []
     matches.concat(value_count_pair) if word?
@@ -83,7 +83,7 @@ class Node
   end
 
   def count_valid_words
-    return 0 if links.empty? && !valid_word
+    return 0 if no_links_and_not_valid_word
 
     count = 0
     count += 1 if valid_word
@@ -93,6 +93,10 @@ class Node
     end
 
     count
+  end
+
+  def no_links_and_not_valid_word
+    links.empty? && !valid_word
   end
 
   def suggest(str)
