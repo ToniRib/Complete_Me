@@ -77,7 +77,6 @@ class Node
     return 0 if links.empty? && !valid_word
 
     count = 0
-
     count += 1 if valid_word
 
     links.keys.each do |k|
