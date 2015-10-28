@@ -204,9 +204,9 @@ class CompleteMeTest < Minitest::Test
 
   def test_suggests_words_that_contain_substring
     completion = CompleteMe.new
-    completion.populate("happy\napple\npear\ncrappy")
+    completion.populate("happy\napple\npear\ncrappy\nhappyness")
 
-    expected = %w(crappy apple happy)
+    expected = %w(crappy apple happyness happy)
 
     assert_equal expected, completion.suggest_substring('pp')
   end
