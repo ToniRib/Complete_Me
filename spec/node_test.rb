@@ -329,7 +329,7 @@ class NodeTest < Minitest::Test
     node = Node.new
     node.insert('hello')
 
-    fail_message = 'Cannot find search string in Trie' 
+    fail_message = 'Cannot find search string in Trie'
 
     e = assert_raises(RuntimeError) { node.search('apple') }
     assert_equal fail_message, e.message

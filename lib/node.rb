@@ -46,7 +46,7 @@ class Node
     return links[letter] if end_of_string?(str, pos)
 
     fail 'Cannot find search string in Trie' if link_does_not_exist(letter)
-    
+
     links[letter].search(str, pos + 1)
   end
 
@@ -59,13 +59,13 @@ class Node
 
     cur_links.keys.each do |k|
       matches.push(value_count_pair(cur_links, k)) if cur_links[k].word?
-      matches << find_words(cur_links[k].links) if links_exist(cur_links, k)
+      matches << find_words(cur_links[k].links) if link_exists(cur_links, k)
     end
 
     matches.flatten
   end
 
-  def links_exist(cur_links, letter)
+  def link_exists(cur_links, letter)
     !cur_links[letter].links.empty?
   end
 
@@ -74,7 +74,17 @@ class Node
   end
 
   def count_valid_words
-    links.to_s.scan('@valid_word=true').count
+    return 0 if links.empty? && !valid_word
+
+    count = 0
+
+    count += 1 if valid_word
+
+    links.keys.each do |k|
+      count += links[k].count_valid_words unless links[k].nil?
+    end
+
+    count
   end
 
   def suggest(str)

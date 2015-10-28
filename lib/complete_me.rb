@@ -20,9 +20,15 @@ class CompleteMe
 
     list = convert_to_array(list)
 
+    t1 = Time.now
     list.each { |word| center.insert(word) }
+    t2 = Time.now
+    puts "Elapsed time to create Trie: #{t2 - t1} seconds."
 
+    t3 = Time.now
     @count = center.count_valid_words
+    t4 = Time.now
+    puts "Elapsed time to count: #{t4 - t3} seconds."
   end
 
   def suggest(str)
@@ -55,10 +61,13 @@ end
 if __FILE__ == $PROGRAM_NAME
   completion = CompleteMe.new
   completion.insert('toni')
-  puts completion.count
+
+  t1 = Time.now
   dict = File.read('/usr/share/dict/words')
+  t2 = Time.now
+  puts "Elapsed time to read: #{t2 - t1} seconds."
   completion.populate(dict)
+
   puts completion.count
-  p completion.suggest('piz')
+  p completion.suggest('toni')
 end
-2
