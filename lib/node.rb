@@ -98,6 +98,9 @@ class Node
 
   def suggest_all(str)
     suggestions = find_words_and_counts_with_substring(str)
+
+    fail "Cannot find any words containing '#{str}' in Trie" if suggestions.empty?
+
     slice_sort_and_collect(suggestions)
   end
 

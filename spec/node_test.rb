@@ -496,4 +496,15 @@ class NodeTest < Minitest::Test
 
     assert_equal expected, node.suggest_all('pp')
   end
+
+  def test_find_substring_returns_error_if_string_not_found
+    node = Node.new
+    words = %w(appetite apple happy pepper pp banana pear)
+    words.each { |word| node.insert(word) }
+
+    fail_message = "Cannot find any words containing 'z' in Trie"
+
+    e = assert_raises(RuntimeError) { node.suggest_all('z') }
+    assert_equal fail_message, e.message
+  end
 end
