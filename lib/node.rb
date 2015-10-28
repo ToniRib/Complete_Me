@@ -67,9 +67,7 @@ class Node
     matches = []
     matches.concat(value_count_pair) if word?
 
-    matches << links.keys.map do |k|
-      links[k].find_words_and_counts
-    end
+    matches << links.keys.map { |k| links[k].find_words_and_counts }
 
     matches.flatten
   end
@@ -84,9 +82,7 @@ class Node
     count = 0
     count += 1 if valid_word
 
-    links.keys.each do |k|
-      count += links[k].count_valid_words
-    end
+    links.keys.each { |k| count += links[k].count_valid_words }
 
     count
   end
