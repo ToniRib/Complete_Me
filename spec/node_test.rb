@@ -483,4 +483,17 @@ class NodeTest < Minitest::Test
 
     assert_equal expected, node.suggest_all('pp')
   end
+
+  def test_suggest_all_returns_highly_selected_words_first
+    node = Node.new
+    words = %w(appetite apple happy pepper pp banana pear)
+    words.each { |word| node.insert(word) }
+
+    5.times { node.select('apple') }
+    3.times { node.select('happy') }
+
+    expected = %w(apple happy pp pepper appetite)
+
+    assert_equal expected, node.suggest_all('pp')
+  end
 end
