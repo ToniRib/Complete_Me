@@ -211,6 +211,15 @@ class CompleteMeTest < Minitest::Test
     assert_equal expected, completion.suggest_substring('pp')
   end
 
+  def test_suggests_words_that_contain_substring_and_start_with_substring
+    completion = CompleteMe.new
+    completion.populate("happy\napple\npear\ncrappy\nppe")
+
+    expected = %w(crappy ppe apple happy)
+
+    assert_equal expected, completion.suggest_substring('pp')
+  end
+
   def test_returns_error_if_no_words_found_that_include_substring
     completion = CompleteMe.new
     completion.populate("happy\napple\npear\ncrappy")
@@ -219,5 +228,17 @@ class CompleteMeTest < Minitest::Test
 
     e = assert_raises(RuntimeError) { completion.suggest_substring('z') }
     assert_equal fail_message, e.message
+  end
+
+  def test_suggest_words_with_substring_and_ranks_by_select_count
+    completion = CompleteMe.new
+    completion.populate("happy\napple\npear\ncrappy\nunhappy")
+
+    5.times { completion.select('pp', 'happy') }
+    3.times { completion.select('pp', 'apple') }
+
+    expected = %w(happy apple crappy unhappy)
+
+    assert_equal expected, completion.suggest_substring('pp')
   end
 end
