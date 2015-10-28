@@ -23,11 +23,11 @@ full_addresses = loader.load("./addresses/addresses.csv")
 puts 'Populating Trie with Denver addresses...'
 completion.populate(full_addresses)
 
-puts "Jeff's house:"
-puts completion.suggest('1650 N Pop')
+puts "Falling Rock Tap House:"
+puts completion.suggest('1919 Blake')
 
-puts "Promoting Toni's old apartment"
-completion.select('1164', '1164 S Acoma St Unit 390')
+puts "Promoting Turing"
+completion.select('1510', '1510 Blake St')
 
-puts "Units in the 390 - 399 range at Toni's old apartment complex:"
-puts completion.suggest('1164 S Acoma St Unit 39')
+puts "10 other 1510 addresses:"
+puts completion.suggest('1510')[0..10]

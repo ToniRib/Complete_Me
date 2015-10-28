@@ -63,6 +63,45 @@ The following is an example as run with [pry](https://github.com/pry/pry) from t
 => ["pizzeria", "pizzicato", "pizzle", "pize", "pizza"]
 ```
 
+### Denver Address Load & Suggestions
+
+The project contains a separate file `load_addresses.rb` which allows for the loading of the [database of Denver county addresses](http://data.denvergov.org/dataset/city-and-county-of-denver-addresses) as a csv file. The file is already stored in the addresses directory. The file contains a few examples of suggestion and selection and can be run as is from the command line by performing the following:
+
+```
+$ ruby lib/load_addresses.rb
+Loading database of Denver addresses...
+Populating Trie with Denver addresses...
+Falling Rock Tap House:
+1919 Blake St
+Promoting Turing
+10 other 1510 addresses:
+1510 Blake St
+1510 S Josephine St
+15106 E 50th Way
+15101 E Mitchell Pl
+15101 E 50th Ave
+15101 E Bolling Dr
+15103 E Kelly Pl
+15103 E Andrews Dr
+15102 E Andrews Dr
+15102 E Kelly Pl
+15104 E Maxwell Pl
+```
+
+Additionally, the file could be required while in a pry session from the command line to allow for dynamic searching of the Trie:
+
+```
+require './lib/load_addresses.rb'
+completion = CompleteMe.new
+loader = LoadAddresses.new
+
+full_addresses = loader.load("./addresses/addresses.csv")
+
+completion.populate(full_addresses)
+```
+
+After running the `populate` command, any of the other `CompleteMe` methods can be used.
+
 ### Test Suite
 
 The Node and CompleteMe classes each have a corresponding testing file written with [minitest](https://github.com/seattlerb/minitest) which can be run from the terminal using mrspec:
