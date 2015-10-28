@@ -13,7 +13,7 @@ class NodeTest < Minitest::Test
   end
 
   def test_node_is_not_a_word_by_default
-    node = Node.new('piz')
+    node = Node.new
     refute node.word?
   end
 
@@ -52,7 +52,7 @@ class NodeTest < Minitest::Test
     assert_equal expected, node.links
   end
 
-  def test_can_insert_link_to_single_letter_node
+  def test_can_insert_link_to_single_letter_node_from_empty_node
     node = Node.new
     node.insert('a')
 
@@ -165,6 +165,21 @@ class NodeTest < Minitest::Test
     node.insert('hello')
 
     assert_equal 'happy', node.search('happy').value
+  end
+
+  def test_finds_a_substring_that_is_not_a_valid_word
+    node = Node.new
+    node.insert('happy')
+
+    assert_equal 'hap', node.search('hap').value
+  end
+
+  def test_searching_for_a_string_does_not_raise_selection_count
+    node = Node.new
+    node.insert('happy')
+    node.search('happy')
+
+    assert_equal 0, node.search('happy').select_count
   end
 
   def test_returns_possible_matches_for_suggestion
@@ -292,12 +307,12 @@ class NodeTest < Minitest::Test
       node.insert(word)
     end
 
-    suggestions1 = %w(inside insight intelligence intellect in)
-    assert_equal suggestions1.reverse, node.suggest('in')
+    suggestions1 = %w(intellect intelligence insight inside in)
+    assert_equal suggestions1, node.suggest('in')
 
-    node.select('intellect')
+    node.select('insight')
 
-    assert_equal 'intellect', node.suggest('in')[0]
+    assert_equal 'insight', node.suggest('in')[0]
   end
 
   def test_suggestions_returned_in_order_of_selection_count
@@ -333,5 +348,9 @@ class NodeTest < Minitest::Test
 
     e = assert_raises(RuntimeError) { node.search('apple') }
     assert_equal fail_message, e.message
+  end
+
+  def test_
+    # write tests for find_words
   end
 end

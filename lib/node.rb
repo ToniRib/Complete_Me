@@ -54,23 +54,25 @@ class Node
     str.length == pos + 1
   end
 
-  def find_words(cur_links)
-    matches = []
+  def find_words
+    return nil if links.empty? && !word?
 
-    cur_links.keys.each do |k|
-      matches.push(value_count_pair(cur_links, k)) if cur_links[k].word?
-      matches << find_words(cur_links[k].links) if link_exists(cur_links, k)
+    matches = []
+    matches.concat(value_count_pair) if word?
+
+    matches << links.keys.map do |k|
+      links[k].find_words
     end
 
     matches.flatten
   end
 
   def link_exists(cur_links, letter)
-    !cur_links[letter].links.empty?
+    !cur_links[letter].empty?
   end
 
-  def value_count_pair(links, k)
-    [links[k].value, links[k].select_count]
+  def value_count_pair
+    [value, select_count]
   end
 
   def count_valid_words
@@ -80,16 +82,14 @@ class Node
     count += 1 if valid_word
 
     links.keys.each do |k|
-      count += links[k].count_valid_words unless links[k].nil?
+      count += links[k].count_valid_words
     end
 
     count
   end
 
   def suggest(str)
-    match = search(str)
-    suggestions = find_words(match.links)
-    add_current_word(match, suggestions) if match.word?
+    suggestions = search(str).find_words
     suggestions = slice_into_pairs(suggestions)
     sort_and_collect_suggestions(suggestions)
   end
