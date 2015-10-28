@@ -1,7 +1,7 @@
 # Class for each node of the Trie
 class Node
-  attr_reader :value
-  attr_accessor :valid_word, :links, :select_count
+  attr_reader :value, :links
+  attr_accessor :valid_word, :select_count
 
   def initialize(value = '')
     @value = value
