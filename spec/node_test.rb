@@ -439,4 +439,36 @@ class NodeTest < Minitest::Test
 
     refute node.no_links_and_not_valid_word
   end
+
+  def test_suggest_all_finds_word_that_starts_with_string
+    node = Node.new
+    node.insert('app')
+
+    assert_equal ['app'], node.suggest_all('ap')
+  end
+
+  def test_suggest_all_finds_word_that_contains_string_in_middle
+    node = Node.new
+    node.insert('happy')
+
+    assert_equal ['happy'], node.suggest_all('ap')
+  end
+
+  def test_suggest_all_finds_multiple_words_matching_string
+    node = Node.new
+    words = %w(appetite apple happy pepper)
+    words.each { |word| node.insert(word) }
+
+    assert_equal words, node.suggest_all('pp')
+  end
+
+  def test_suggest_all_ignores_words_that_dont_match
+    node = Node.new
+    words = %w(appetite apple happy pepper pp banana pear)
+    words.each { |word| node.insert(word) }
+
+    expected = %w(appetite apple happy pepper pp)
+
+    assert_equal expected, node.suggest_all('pp')
+  end
 end

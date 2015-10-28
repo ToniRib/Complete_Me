@@ -1,3 +1,5 @@
+require 'pry'
+
 # Class for each node of the Trie
 class Node
   attr_reader :value
@@ -93,6 +95,15 @@ class Node
     suggestions = search(str).find_words_and_counts
     suggestions = slice_into_pairs(suggestions)
     sort_and_collect_suggestions(suggestions)
+  end
+
+  def suggest_all(str)
+    # binding.pry
+    matches = []
+    matches.push(value) if valid_word && value.include?(str)
+
+    matches << links.keys.map { |k| links[k].suggest_all(str) }
+    matches.flatten
   end
 
   def slice_into_pairs(arr)
