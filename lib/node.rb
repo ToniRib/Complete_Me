@@ -101,10 +101,6 @@ class Node
     sort_and_collect_suggestions(suggestions)
   end
 
-  def add_current_word(match, suggestions)
-    suggestions.concat([match.value, match.select_count])
-  end
-
   def slice_into_pairs(arr)
     arr.each_slice(2).to_a
   end

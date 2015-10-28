@@ -34,7 +34,6 @@ class CompleteMe
   end
 
   private
-
   def convert_to_array(list)
     array?(list) ? list : list.split("\n")
   end
@@ -60,7 +59,7 @@ if __FILE__ == $PROGRAM_NAME
 
   puts "Valid Words in Trie: #{completion.count}"
   puts ""
-  
+
   puts "Suggestions for (toni):"
   p completion.suggest('toni')
   puts ""
