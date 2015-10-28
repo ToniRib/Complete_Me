@@ -29,6 +29,10 @@ class CompleteMe
     center.suggest(str)
   end
 
+  def suggest_substring(str)
+    center.suggest_all(str)
+  end
+
   def select(_str, selection)
     center.select(selection)
   end

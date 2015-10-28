@@ -201,4 +201,23 @@ class CompleteMeTest < Minitest::Test
     e = assert_raises(RuntimeError) { completion.select('app', 'apple') }
     assert_equal fail_message, e.message
   end
+
+  def test_suggests_words_that_contain_substring
+    completion = CompleteMe.new
+    completion.populate("happy\napple\npear\ncrappy")
+
+    expected = %w(crappy apple happy)
+
+    assert_equal expected, completion.suggest_substring('pp')
+  end
+
+  def test_returns_error_if_no_words_found_that_include_substring
+    completion = CompleteMe.new
+    completion.populate("happy\napple\npear\ncrappy")
+
+    fail_message = "Cannot find any words containing 'z' in Trie"
+
+    e = assert_raises(RuntimeError) { completion.suggest_substring('z') }
+    assert_equal fail_message, e.message
+  end
 end
