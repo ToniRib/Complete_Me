@@ -110,7 +110,7 @@ class Node
   def find_words_and_counts_with_substring(str)
     matches = []
 
-    matches.push(value_count_pair) if word_is_valid_and_includes_string(str)
+    matches.concat(value_count_pair) if word_is_valid_and_includes_string(str)
 
     matches << links.keys.map do |k|
       links[k].find_words_and_counts_with_substring(str)
