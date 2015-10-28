@@ -186,9 +186,7 @@ class NodeTest < Minitest::Test
     node = Node.new
 
     words = %w(can cannibal canister cannoli cane)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     expected = words.sort
     matches = node.suggest('ca')
@@ -200,9 +198,7 @@ class NodeTest < Minitest::Test
     node = Node.new
 
     words = %w(can cannibal canister cannoli cane)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     expected = %w(cannibal cannoli)
     matches = node.suggest('cann')
@@ -214,9 +210,7 @@ class NodeTest < Minitest::Test
     node = Node.new
 
     words = %w(can cannibal canister cannoli cane)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     matches = node.suggest('can')
 
@@ -253,9 +247,7 @@ class NodeTest < Minitest::Test
   def test_counts_returns_total_number_of_valid_words
     node = Node.new
     words = %w(can cannibal canister cannoli cane a)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     assert_equal 6, node.count_valid_words
   end
@@ -303,9 +295,7 @@ class NodeTest < Minitest::Test
   def test_selected_node_appears_first_in_suggestions
     node = Node.new
     words = %w(in inside intelligence intellect insight)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     suggestions1 = %w(intellect intelligence insight inside in)
     assert_equal suggestions1, node.suggest('in')
@@ -318,9 +308,7 @@ class NodeTest < Minitest::Test
   def test_suggestions_returned_in_order_of_selection_count
     node = Node.new
     words = %w(in inside intelligence intellect insight)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     5.times { node.select('inside') }
     3.times { node.select('intelligence') }
@@ -378,9 +366,7 @@ class NodeTest < Minitest::Test
   def test_finds_all_valid_words_with_default_counts_linked_to_node
     node = Node.new
     words = %w(in inside intelligence intellect insight)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     expected = ['in', 0, 'inside', 0, 'insight', 0, 'intelligence', 0, 'intellect', 0]
 
@@ -390,9 +376,7 @@ class NodeTest < Minitest::Test
   def test_finds_all_valid_words_with_select_counts_linked_to_node
     node = Node.new
     words = %w(in inside intelligence intellect insight)
-    words.each do |word|
-      node.insert(word)
-    end
+    words.each { |word| node.insert(word) }
 
     5.times { node.select('inside') }
     3.times { node.select('intellect') }
