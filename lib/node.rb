@@ -65,7 +65,7 @@ class Node
     matches = []
     matches.concat(value_count_pair) if word?
 
-    matches << links.keys.map { |k| links[k].find_words_and_counts }
+    matches << links.keys.collect { |k| links[k].find_words_and_counts }
 
     matches.flatten
   end
@@ -112,7 +112,7 @@ class Node
 
     matches.concat(value_count_pair) if word_is_valid_and_includes_string(str)
 
-    matches << links.keys.map do |k|
+    matches << links.keys.collect do |k|
       links[k].find_words_and_counts_with_substring(str)
     end
 
